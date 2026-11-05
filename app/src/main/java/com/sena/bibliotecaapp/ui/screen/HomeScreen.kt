@@ -1,3 +1,4 @@
+
 package com.sena.bibliotecaapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,8 @@ import com.sena.bibliotecaapp.ui.composable.PrimaryButton
 
 @Composable
 fun HomeScreen(
-    onVerLibros: () -> Unit
+    onVerLibros: () -> Unit = {},
+    onVerReservas: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -42,6 +44,13 @@ fun HomeScreen(
         PrimaryButton(
             texto = "Ver Catálogo",
             onClick = onVerLibros
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        PrimaryButton(
+            texto = "Mis reservas",
+            onClick = onVerReservas
         )
     }
 }
