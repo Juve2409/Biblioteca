@@ -1,3 +1,4 @@
+
 package com.sena.bibliotecaapp.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
@@ -5,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sena.bibliotecaapp.data.Reservation
 import java.text.SimpleDateFormat
@@ -31,18 +35,10 @@ fun RenewReservationScreen(
     onConfirm: (String) -> Unit,
     onBack: () -> Unit
 ) {
-    var mostrarCalendario by remember {
-        mutableStateOf(false)
-    }
+    var mostrarCalendario by remember { mutableStateOf(false) }
+    var nuevaFecha by remember { mutableStateOf("") }
 
-    var nuevaFecha by remember {
-        mutableStateOf("")
-    }
-
-    val formatoFecha = SimpleDateFormat(
-        "dd/MM/yyyy",
-        Locale.getDefault()
-    )
+    val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     Column(
         modifier = Modifier
@@ -51,22 +47,25 @@ fun RenewReservationScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Renovar reserva",
-            style = MaterialTheme.typography.headlineMedium
+            "Renovar reserva",
+            style = MaterialTheme.typography.headlineMedium,
+            color = Color(0xFF173B65)
         )
 
-        Text(text = "Libro: ${reservation.book.nombre}")
+        Text("Libro: ${reservation.book.nombre}")
+        Text("Fecha actual: ${reservation.fechaDevolucion}")
 
-        Text(text = "Fecha actual: ${reservation.fechaDevolucion}")
-
+        // Seleccionar fecha
         OutlinedButton(
-            onClick = {
-                mostrarCalendario = true
-            },
-            modifier = Modifier.fillMaxWidth()
+            onClick = { mostrarCalendario = true },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Color(0xFF2457C5)
+            )
         ) {
             Text(
-                text = if (nuevaFecha.isEmpty()) {
+                if (nuevaFecha.isEmpty()) {
                     "Seleccionar nueva fecha"
                 } else {
                     "Nueva fecha: $nuevaFecha"
@@ -74,6 +73,7 @@ fun RenewReservationScreen(
             )
         }
 
+        // Continuar
         Button(
             onClick = {
                 if (nuevaFecha.isNotEmpty()) {
@@ -81,19 +81,30 @@ fun RenewReservationScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = nuevaFecha.isNotEmpty()
+            enabled = nuevaFecha.isNotEmpty(),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF269B65),
+                contentColor = Color.White
+            )
         ) {
             Text("Continuar")
         }
 
+        // Volver
         OutlinedButton(
             onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Color(0xFF2457C5)
+            )
         ) {
             Text("Volver")
         }
     }
 
+    // Calendario
     if (mostrarCalendario) {
         val datePickerState = rememberDatePickerState()
 
@@ -110,7 +121,10 @@ fun RenewReservationScreen(
                         mostrarCalendario = false
                     }
                 ) {
-                    Text("Aceptar")
+                    Text(
+                        "Aceptar",
+                        color = Color(0xFF269B65)
+                    )
                 }
             },
             dismissButton = {
@@ -119,7 +133,10 @@ fun RenewReservationScreen(
                         mostrarCalendario = false
                     }
                 ) {
-                    Text("Cancelar")
+                    Text(
+                        "Cancelar",
+                        color = Color(0xFFE53935)
+                    )
                 }
             }
         ) {
